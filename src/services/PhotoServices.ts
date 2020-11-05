@@ -3,20 +3,19 @@ import { Request } from "express";
 import { IApiResponse } from "../utils/ApiResponse";
 
 class PhotoServices {
-  public async all(request: Request) {
+  public async all(request: Request): Promise<IApiResponse> {
     const response: IApiResponse = { data: [], status: 404 };
 
-    await Photo.find((err, photos) => {
-      if (err) {
-        console.log(err);
-        response.data = { photos: [] };
-        response.status = 500;
-        return response;
-      }
+    try {
+      const photos = await Photo.find();
+
       response.data = photos;
       response.status = 200;
-      return response;
-    });
+    } catch (e) {
+      console.log(e);
+      response.data = e;
+      response.status = 500;
+    }
 
     return response;
   }
@@ -24,7 +23,7 @@ class PhotoServices {
   public async one(request: Request) {
     const response: IApiResponse = { data: [], status: 404 };
 
-    await Photo.findOne({ id: request.params.id }, (err, res) => {
+    await Photo.findOne({ _id: request.params.id }, (err, res) => {
       if (err) {
         console.log(err);
         response.data = { photo: null };
@@ -62,7 +61,7 @@ class PhotoServices {
   public async delete(request: Request) {
     const response: IApiResponse = { data: [], status: 404 };
 
-    await Photo.remove({ id: request.params.id }, (err) => {
+    await Photo.remove({ _id: request.params.id }, (err) => {
       if (err) {
         response.status = 500;
         response.data = { deleted: false };
@@ -80,8 +79,7 @@ class PhotoServices {
   public async update(request: Request) {
     const response: IApiResponse = { data: [], status: 404 };
 
-    const photo = new Photo(request.body);
-    photo.save((err) => {
+    Photo.findByIdAndUpdate(request.params.id, request.body, (err: Error) => {
       if (err) {
         response.status = 500;
         response.data = { updated: false };

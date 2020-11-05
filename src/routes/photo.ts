@@ -8,7 +8,7 @@ const controller = new PhotoController();
 router.get("/", (req, res) => controller.all(req, res));
 router.post("/", (req, res) => controller.save(req, res));
 router.get("/:id", (req, res) => controller.one(req, res));
-router.put("/", (req, res) => controller.update(req, res));
+router.put("/:id", (req, res) => controller.update(req, res));
 router.delete("/:id", (req, res) => controller.delete(req, res));
 
 export default router;

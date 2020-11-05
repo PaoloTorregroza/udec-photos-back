@@ -25,7 +25,7 @@ class PhotoController {
   }
 
   public async update(request: Request, response: Response) {
-    const responseData = await this.services.delete(request);
+    const responseData = await this.services.update(request);
     response.status(responseData.status).send(responseData.data);
   }
 }
