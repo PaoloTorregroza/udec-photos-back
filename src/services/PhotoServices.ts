@@ -20,7 +20,7 @@ class PhotoServices {
     return response;
   }
 
-  public async one(request: Request) {
+  public async one(request: Request): Promise<IApiResponse> {
     const response: IApiResponse = { data: [], status: 404 };
 
     await Photo.findOne({ _id: request.params.id }, (err, res) => {
@@ -39,7 +39,7 @@ class PhotoServices {
     return response;
   }
 
-  public async save(request: Request) {
+  public async save(request: Request): Promise<IApiResponse> {
     const response: IApiResponse = { data: [], status: 404 };
 
     const newPhoto = new Photo(request.body);
@@ -58,7 +58,7 @@ class PhotoServices {
     return response;
   }
 
-  public async delete(request: Request) {
+  public async delete(request: Request): Promise<IApiResponse> {
     const response: IApiResponse = { data: [], status: 404 };
 
     await Photo.remove({ _id: request.params.id }, (err) => {
@@ -76,7 +76,7 @@ class PhotoServices {
     return response;
   }
 
-  public async update(request: Request) {
+  public async update(request: Request): Promise<IApiResponse> {
     const response: IApiResponse = { data: [], status: 404 };
 
     Photo.findByIdAndUpdate(request.params.id, request.body, (err: Error) => {
